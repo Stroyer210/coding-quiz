@@ -13,3 +13,5 @@ https://javascript.info/types
 https://www.geeksforgeeks.org/html-hr-tag/
 
 https://developer.mozilla.org/en-US/docs/Web/API/Node/appendChild
+
+https://developer.mozilla.org/en-US/docs/Web/CSS/display

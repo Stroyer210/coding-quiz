@@ -5,6 +5,10 @@ var answer3 = document.createElement("button");
 var answer4 = document.createElement("button");
 var hr = document.createElement("hr");
 var result = document.createElement("p");
+var divForSubmitScore = document.createElement("div");
+var score = document.createElement("p");
+var submit = document.createElement("button");
+var input = document.createElement("input");
 
 // Linking elements from HTML
 var firstParagraph = document.getElementById("first-paragraph");
@@ -21,7 +25,7 @@ questions.textContent = "Coding Quiz Challenge";
 firstParagraph.textContent =
   "Try to answer the following code-related questions within the time limit. Keep\r in mind that incorrect answers will penalize your score/time\rby then seconds.";
 
-// Creating the styles of the buttons
+// Setting attributes for elements
 answer1.setAttribute(
   "style",
   " background-color: rgb(111, 29, 150); padding:15px 30px; width:18%; margin:2px 0 0px 0px; color:white; font-size: 20px; border-radius: 5px; border:none; margin-top:40px; text-align: center;"
@@ -39,6 +43,33 @@ answer4.setAttribute(
   " background-color: rgb(111, 29, 150); padding:15px 30px; width:18%; margin:2px 0 0px 0px; color:white; font-size: 20px; border-radius: 5px; border:none; margin-top:40px; text-align: center;"
 );
 
+hr.setAttribute(
+  "style",
+  "color:rgb(77, 76, 76); margin-top:30px; margin-right:40px;"
+);
+result.setAttribute(
+  "style",
+  "color:rgb(143, 142, 142); text-align:left; margin-left:50px; font-size:40px;"
+);
+score.setAttribute(
+  "style",
+  " font-size:35px; margin-right:20px;"
+);
+input.setAttribute(
+  "style",
+  "margin-right:20px; width:400px; height:45px; font-size:25px; padding-left:10px;"
+);
+submit.setAttribute(
+  "style",
+  " background-color: rgb(111, 29, 150); padding:15px 30px; width:18%; color:white; font-size: 20px; border-radius: 5px; border:none; text-align: center;"
+);
+
+divForSubmitScore.setAttribute(
+  "style",
+  "display:flex; justify-content:flex-start; margin-top:7px;"
+)
+
+
 //Creating the functions
 var secondsLeft = 60;
 runTimer = () => {
@@ -46,8 +77,10 @@ runTimer = () => {
     secondsLeft--;
     timer.textContent = "Time: " + secondsLeft;
 
-    if (secondsLeft === 0) {
+    if (secondsLeft === 0 || secondsLeft < 0) {
       clearInterval(timerInterval);
+      submitScore();
+      timer.textContent = "Time: 0";
     }
   }, 1000);
 };
@@ -71,94 +104,82 @@ startQuiz = () => {
 };
 
 question2Wrong = () => {
+  secondsLeft = secondsLeft-10;
   questions.textContent =
     "The condition in an if / else  statement is enclosed with _________:";
-  questions.setAttribute("style", "text-align:left;");
+  // questions.setAttribute("style", "text-align:left;");
   first = true;
-  divForQuestions.setAttribute("style", "margin-left:22%;");
+  // divForQuestions.setAttribute("style", "margin-left:22%;");
   answer1.textContent = "1. Quotes";
   answer2.textContent = "2. Curly brackets";
   answer3.textContent = "3. Parenthesis";
   answer4.textContent = "4. Square brackets";
   divForQuestions.appendChild(hr);
-  hr.setAttribute(
-    "style",
-    "color:rgb(77, 76, 76); margin-top:30px; margin-right:40px;"
-  );
   divForQuestions.appendChild(result);
   result.textContent = "Wrong!";
-  result.setAttribute(
-    "style",
-    "color:rgb(143, 142, 142); text-align:left; margin-left:50px; font-size:40px;"
-  );
 };
 
 question2Correct = () => {
   questions.textContent =
     "The condition in an if / else  statement is enclosed with _________:";
-  questions.setAttribute("style", "text-align:left;");
+  // questions.setAttribute("style", "text-align:left;");
   first = true;
-  divForQuestions.setAttribute("style", "margin-left:22%;");
+  // divForQuestions.setAttribute("style", "margin-left:22%;");
   answer1.textContent = "1. Quotes";
   answer2.textContent = "2. Curly brackets";
   answer3.textContent = "3. Parenthesis";
   answer4.textContent = "4. Square brackets";
   divForQuestions.appendChild(hr);
-  hr.setAttribute(
-    "style",
-    "color:rgb(77, 76, 76); margin-top:30px; margin-right:40px;"
-  );
   divForQuestions.appendChild(result);
   result.textContent = "Correct!";
-  result.setAttribute(
-    "style",
-    "color:rgb(143, 142, 142); text-align:left; margin-left:50px; font-size:40px;"
-  );
 };
 
 question3Wrong = () => {
+  secondsLeft = secondsLeft-10;
   questions.textContent = "Arrays in JavaScript can be used to store ______:";
-  questions.setAttribute("style", "text-align:left;");
+  // questions.setAttribute("style", "text-align:left;");
   first = true;
-  divForQuestions.setAttribute("style", "margin-left:22%;");
+  // divForQuestions.setAttribute("style", "margin-left:22%;");
   answer1.textContent = "1. Numbers and strings";
   answer2.textContent = "2. Other arrays";
   answer3.textContent = "3. Booleans";
   answer4.textContent = "4. All of the above";
   divForQuestions.appendChild(hr);
-  hr.setAttribute(
-    "style",
-    "color:rgb(77, 76, 76); margin-top:30px; margin-right:40px;"
-  );
   divForQuestions.appendChild(result);
   result.textContent = "Wrong!";
-  result.setAttribute(
-    "style",
-    "color:rgb(143, 142, 142); text-align:left; margin-left:50px; font-size:40px;"
-  );
 };
 
 question3Correct = () => {
   questions.textContent = "Arrays in JavaScript can be used to store ______:";
-  questions.setAttribute("style", "text-align:left;");
+  // questions.setAttribute("style", "text-align:left;");
   first = true;
-  divForQuestions.setAttribute("style", "margin-left:22%;");
+  // divForQuestions.setAttribute("style", "margin-left:22%;");
   answer1.textContent = "1. Numbers and strings";
   answer2.textContent = "2. Other arrays";
   answer3.textContent = "3. Booleans";
   answer4.textContent = "4. All of the above";
   divForQuestions.appendChild(hr);
-  hr.setAttribute(
-    "style",
-    "color:rgb(77, 76, 76); margin-top:30px; margin-right:40px;"
-  );
   divForQuestions.appendChild(result);
   result.textContent = "Correct!";
-  result.setAttribute(
-    "style",
-    "color:rgb(143, 142, 142); text-align:left; margin-left:50px; font-size:40px;"
-  );
 };
+
+submitScore = () => {
+  questions.textContent = "All done!";
+  firstParagraph.textContent = "Your final score is _____.";
+  firstParagraph.setAttribute("style", "text-align:left");
+  answer1.remove();
+  answer2.remove();
+  answer3.remove();
+  answer4.remove();
+  score.textContent = "Enter initials: ";
+  submit.textContent = "Submit";
+  divForQuestions.appendChild(divForSubmitScore);
+  divForSubmitScore.appendChild(score);
+  divForSubmitScore.appendChild(input);
+  divForSubmitScore.appendChild(submit);
+  divForQuestions.appendChild(hr);
+  divForQuestions.appendChild(result);
+}
 
 hover1 = () => {
   answer1.style.cursor = "pointer";
@@ -176,6 +197,10 @@ hover4 = () => {
   answer4.style.cursor = "pointer";
   answer4.style.background = "rgb(186, 113, 219)";
 };
+submitHover = () => {
+  submit.style.cursor = "pointer";
+  submit.style.background = "rgb(186, 113, 219)";
+};
 out1 = () => {
   answer1.style.cursor = "";
   answer1.style.background = "rgb(111, 29, 150)";
@@ -192,6 +217,10 @@ out4 = () => {
   answer4.style.cursor = "";
   answer4.style.background = "rgb(111, 29, 150)";
 };
+submitOut = () => {
+  submit.style.cursor = "";
+  submit.style.background = "rgb(111, 29, 150)";
+};
 
 // Added event listeners
 startButton.addEventListener("click", startQuiz);
@@ -204,6 +233,8 @@ answer3.addEventListener("mouseover", hover3);
 answer3.addEventListener("mouseout", out3);
 answer4.addEventListener("mouseover", hover4);
 answer4.addEventListener("mouseout", out4);
+submit.addEventListener("mouseover", submitHover);
+submit.addEventListener("mouseout", submitOut);
 
 answer1.addEventListener("click", question2Wrong);
 answer2.addEventListener("click", question2Wrong);
