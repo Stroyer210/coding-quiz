@@ -23,16 +23,16 @@ var timer = document.getElementById("timer");
 var viewScores = document.getElementById("view-scores");
 
 //Setting a parameter
-var first = true;
 var scoreNumber = 0;
 var arrayOfScores = [];
+let itemInitialsScore = "";
 
 //Text of the first page
 questions.textContent = "Coding Quiz Challenge";
 firstParagraph.textContent =
   "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize 5 seconds of your time. MAXIMUM SCORE IS 5 POINTS.";
 
-// Setting attributes for elements
+// Setting class for elements
 answer1.className = "buttonsStyle";
 answer2.className = "buttonsStyle";
 answer3.className = "buttonsStyle";
@@ -41,8 +41,7 @@ submit.className = "buttonSubmit";
 buttonGoBack.className = "buttonsStyle";
 buttonReset.className = "buttonsStyle";
 
-buttonReset.setAttribute("style", "display:block; float:right");
-buttonGoBack.setAttribute("style", "display:block; float:left");
+// Setting attributes for elements
 hr.setAttribute(
   "style",
   "color:rgb(77, 76, 76); margin-top:30px; margin-right:40px;"
@@ -56,22 +55,27 @@ input.setAttribute(
   "style",
   "margin-right:20px; width:400px; height:45px; font-size:25px; padding-left:10px;"
 );
-
+divForLastButtons.setAttribute(
+  "style",
+  "display:flex; justify-content:flex-start; margin-top:7px; gap:20px;"
+);
 divForSubmitScore.setAttribute(
   "style",
   "display:flex; justify-content:flex-start; margin-top:7px;"
 );
+listScores.setAttribute("style", "text-align:left;");
 
-//Creating the functions
+//Creating the timer function
 var secondsLeft = 60;
+var timerInterval = 0;
 runTimer = () => {
-  var timerInterval = setInterval(function () {
+  timerInterval = setInterval(function () {
     secondsLeft--;
     timer.textContent = "Time: " + secondsLeft;
 
     if (secondsLeft === 0 || secondsLeft < 0) {
       clearInterval(timerInterval);
-      submitScore();
+      submitScoreWrong();
       timer.textContent = "Time: 0";
     }
   }, 1000);
@@ -82,11 +86,12 @@ takeOffResult = () => {
   var timerInterval2 = setTimeout(function () {
     hr.remove();
     result.remove();
-    // clearInterval(timerInterval2);
+    clearInterval(timerInterval2);
   }, 1500);
 };
 
 //Starts with the first question
+//Made two function for each questions when it is correct or incorrect.
 startQuiz = () => {
   questions.textContent = "How do we create an unordered list in HTML:";
   questions.setAttribute("style", "text-align:left;");
@@ -306,6 +311,13 @@ question5Correct = () => {
 };
 
 submitScoreCorrect = () => {
+  console.log("correct");
+  clearInterval(timerInterval);
+  scoreNumber++;
+  answer1.removeEventListener("click", submitScoreWrong);
+  answer2.removeEventListener("click", submitScoreCorrect);
+  answer3.removeEventListener("click", submitScoreWrong);
+  answer4.removeEventListener("click", submitScoreWrong);
   questions.textContent = "All done!";
   firstParagraph.textContent = "Your final score is " + scoreNumber + ".";
   firstParagraph.setAttribute("style", "text-align:left");
@@ -319,7 +331,6 @@ submitScoreCorrect = () => {
   divForSubmitScore.appendChild(score);
   divForSubmitScore.appendChild(input);
   divForSubmitScore.appendChild(submit);
-  scoreNumber++;
   divForQuestions.appendChild(hr);
   divForQuestions.appendChild(result);
   result.textContent = "Correct!";
@@ -327,6 +338,12 @@ submitScoreCorrect = () => {
 };
 
 submitScoreWrong = () => {
+  console.log("wrong");
+  clearInterval(timerInterval);
+  answer1.removeEventListener("click", submitScoreWrong);
+  answer2.removeEventListener("click", submitScoreCorrect);
+  answer3.removeEventListener("click", submitScoreWrong);
+  answer4.removeEventListener("click", submitScoreWrong);
   questions.textContent = "All done!";
   firstParagraph.textContent = "Your final score is " + scoreNumber + ".";
   firstParagraph.setAttribute("style", "text-align:left");
@@ -340,16 +357,16 @@ submitScoreWrong = () => {
   divForSubmitScore.appendChild(score);
   divForSubmitScore.appendChild(input);
   divForSubmitScore.appendChild(submit);
-  scoreNumber++;
   divForQuestions.appendChild(hr);
   divForQuestions.appendChild(result);
   result.textContent = "Wrong!";
   takeOffResult();
 };
 
+//Function to see the results
 highScoresChart = () => {
   questions.textContent = "High Scores";
-  questions.setAttribute("style", "margin:0;");
+  questions.setAttribute("style", "margin:0; text-align: left;");
   firstParagraph.remove();
   score.remove();
   submit.remove();
@@ -360,30 +377,92 @@ highScoresChart = () => {
 
   divForSubmitScore.appendChild(listScores);
 
-  for (var i = 0; i < todos.length; i++) {
-    var itemInitialsScore = arrayOfScores[i];
-
-    var itemList = document.createElement("li") ;
-    itemList.textContent = todo;
-    itemList.setAttribute("data-index", i);
-
-    listScores.appendChild(itemList);
-  }
-  
-  var initials = input.value.trim();
-  // itemList.textContent = initials.toUpperCase() + " - " + scoreNumber + " point(s).";
-  var itemInitialsScore = initials.toUpperCase() + " - " + scoreNumber + " point(s).";
-  arrayOfScores.push(itemInitialsScore);
-  localStorage.setItem("scores", JSON.stringify(arrayOfScores));
+  itemInitialsScore =
+    input.value.trim().toUpperCase() + " - " + scoreNumber + " point(s).";
 
   var arraySavedScores = JSON.parse(localStorage.getItem("scores"));
-  arraySavedScores.forEach(element => {
-    
-    itemList.textContent = arraySavedScores[element];
-  });
+
+  if (arraySavedScores === null) {
+    arrayOfScores.push(itemInitialsScore);
+    window.localStorage.setItem("scores", JSON.stringify(arrayOfScores));
+    var itemList = document.createElement("li");
+    itemList.setAttribute("style", "display:text-align:left; margin-top:7px; ");
+    itemList.textContent = itemInitialsScore;
+    listScores.appendChild(itemList);
+  } else {
+    arraySavedScores.push(itemInitialsScore);
+    window.localStorage.setItem("scores", JSON.stringify(arraySavedScores));
+    arraySavedScores.forEach((element) => {
+      var itemList = document.createElement("li");
+      itemList.setAttribute(
+        "style",
+        "display:text-align:left; margin-top:7px; "
+      );
+      itemList.textContent = element;
+      listScores.appendChild(itemList);
+    });
+  }
+
+  divForQuestions.appendChild(divForLastButtons);
+  buttonGoBack.textContent = "GO BACK";
+  divForLastButtons.appendChild(buttonGoBack);
+
+  buttonReset.textContent = "RESET HIGH SCORES";
+  divForLastButtons.appendChild(buttonReset);
 };
 
+removeLocalStorage = () => {
+  localStorage.removeItem("scores");
+  listScores.remove();
+};
 
+highScoresChartView = function () {
+  if (listScores) {
+    listScores.textContent = "";
+  }
+  questions.textContent = "High Scores";
+  questions.setAttribute("style", "margin:0; text-align: left;");
+  firstParagraph.remove();
+  score.remove();
+  submit.remove();
+  input.remove();
+  hr.remove();
+  result.remove();
+  startButton.remove();
+
+  divForQuestions.appendChild(listScores);
+
+  var arraySavedScoresView = JSON.parse(window.localStorage.getItem("scores"));
+
+  if (arraySavedScoresView) {
+    arraySavedScoresView.forEach((element) => {
+      var itemList = document.createElement("li");
+      itemList.textContent = element;
+      itemList.setAttribute(
+        "style",
+        "display:text-align:left; margin-top:7px; "
+      );
+      listScores.appendChild(itemList);
+    });
+  }
+
+  divForQuestions.setAttribute(
+    "style",
+    "padding-top:10px; margin-left: 22%; margin-top:5px;"
+  );
+  divForQuestions.appendChild(divForLastButtons);
+  divForLastButtons.setAttribute(
+    "style",
+    "display:flex; gap:20px; justify-content:flex-start;"
+  );
+  buttonGoBack.textContent = "GO BACK";
+  divForLastButtons.appendChild(buttonGoBack);
+
+  buttonReset.textContent = "RESET HIGH SCORES";
+  divForLastButtons.appendChild(buttonReset);
+};
+
+//Hovers and out functions
 hover1 = () => {
   answer1.style.cursor = "pointer";
   answer1.style.background = "#92ceee";
@@ -408,6 +487,16 @@ submitHover = () => {
   submit.style.cursor = "pointer";
   submit.style.background = "#92ceee";
   submit.style["boxShadow"] = "0px 0px 4px 4px #92ceee65";
+};
+buttonGoBackHover = () => {
+  buttonGoBack.style.cursor = "pointer";
+  buttonGoBack.style.background = "#92ceee";
+  buttonGoBack.style["boxShadow"] = "0px 0px 4px 4px #92ceee65";
+};
+buttonResetHover = () => {
+  buttonReset.style.cursor = "pointer";
+  buttonReset.style.background = "#92ceee";
+  buttonReset.style["boxShadow"] = "0px 0px 4px 4px #92ceee65";
 };
 out1 = () => {
   answer1.style.cursor = "";
@@ -434,11 +523,21 @@ submitOut = () => {
   submit.style.background = "#48b4ef";
   submit.style["boxShadow"] = "none";
 };
+buttonGoBackOut = () => {
+  buttonGoBack.style.cursor = "";
+  buttonGoBack.style.background = "#48b4ef";
+  buttonGoBack.style["boxShadow"] = "none";
+};
+buttonResetOut = () => {
+  buttonReset.style.cursor = "";
+  buttonReset.style.background = "#48b4ef";
+  buttonReset.style["boxShadow"] = "none";
+};
 
 // Added event listeners
 startButton.addEventListener("click", startQuiz);
 submit.addEventListener("click", highScoresChart);
-viewScores.addEventListener("click", highScoresChart);
+viewScores.addEventListener("click", highScoresChartView);
 
 answer1.addEventListener("mouseover", hover1);
 answer1.addEventListener("mouseout", out1);
@@ -450,31 +549,12 @@ answer4.addEventListener("mouseover", hover4);
 answer4.addEventListener("mouseout", out4);
 submit.addEventListener("mouseover", submitHover);
 submit.addEventListener("mouseout", submitOut);
+buttonGoBack.addEventListener("mouseover", buttonGoBackHover);
+buttonGoBack.addEventListener("mouseout", buttonGoBackOut);
+buttonReset.addEventListener("mouseover", buttonResetHover);
+buttonReset.addEventListener("mouseout", buttonResetOut);
 
-
-// var initials = input.value.trim();
-//   var li = document.createElement("li");
-//   li.textContent = "- " + initials + " / " + scoreNumber + " point(s).";
-//   listOfScores.push(initials);
-//   divForSubmitScore.appendChild(listScores);
-//   listScores.appendChild(li);
-//   divForSubmitScore.setAttribute(
-//     "style",
-//     "display:flex; justify-content:center; margin-top:7px;"
-//   );
-//   li.setAttribute("style", "display:block; font-size: 30px;");
-//   divForQuestions.appendChild(divForLastButtons);
-
-//   buttonGoBack.textContent = "GO BACK";
-//   divForLastButtons.appendChild(buttonGoBack);
-
-//   buttonReset.textContent = "RESET HIGH SCORES";
-//   divForLastButtons.appendChild(buttonReset);
-//   storeScores();
-// function storeScores() {
-//   localStorage.setItem("scores", JSON.stringify(listOfScores));
-// }
-
-// function storedScores() {
-//   storedScored = JSON.parse(localStorage.getItem("scores"));
-// }
+buttonGoBack.addEventListener("click", () => {
+  location.reload();
+});
+buttonReset.addEventListener("click", removeLocalStorage);
