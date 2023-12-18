@@ -25,8 +25,7 @@ var viewScores = document.getElementById("view-scores");
 //Setting a parameter
 var first = true;
 var scoreNumber = 0;
-var listOfScores = [];
-storedScores();
+var arrayOfScores = [];
 
 //Text of the first page
 questions.textContent = "Coding Quiz Challenge";
@@ -83,7 +82,7 @@ takeOffResult = () => {
   var timerInterval2 = setTimeout(function () {
     hr.remove();
     result.remove();
-    clearInterval(timerInterval2);
+    // clearInterval(timerInterval2);
   }, 1500);
 };
 
@@ -113,6 +112,10 @@ startQuiz = () => {
 };
 
 question2Wrong = () => {
+  answer1.removeEventListener("click", question2Wrong);
+  answer2.removeEventListener("click", question2Wrong);
+  answer3.removeEventListener("click", question2Correct);
+  answer4.removeEventListener("click", question2Wrong);
   secondsLeft = secondsLeft - 5;
   questions.textContent =
     "The condition in an if / else  statement is enclosed with _________:";
@@ -132,6 +135,10 @@ question2Wrong = () => {
 };
 
 question2Correct = () => {
+  answer1.removeEventListener("click", question2Wrong);
+  answer2.removeEventListener("click", question2Wrong);
+  answer3.removeEventListener("click", question2Correct);
+  answer4.removeEventListener("click", question2Wrong);
   scoreNumber++;
   questions.textContent =
     "The condition in an if / else  statement is enclosed with _________:";
@@ -151,6 +158,10 @@ question2Correct = () => {
 };
 
 question3Wrong = () => {
+  answer1.removeEventListener("click", question3Wrong);
+  answer2.removeEventListener("click", question3Wrong);
+  answer3.removeEventListener("click", question3Correct);
+  answer4.removeEventListener("click", question3Wrong);
   secondsLeft = secondsLeft - 5;
   questions.textContent = "What does HTML stand for? ";
   answer1.textContent = "1. HyperLink and Text Markup Language";
@@ -173,6 +184,10 @@ question3Wrong = () => {
 };
 
 question3Correct = () => {
+  answer1.removeEventListener("click", question3Wrong);
+  answer2.removeEventListener("click", question3Wrong);
+  answer3.removeEventListener("click", question3Correct);
+  answer4.removeEventListener("click", question3Wrong);
   scoreNumber++;
   questions.textContent = "What does HTML stand for? ";
   answer1.textContent = "1. HyperLink and Text Markup Language";
@@ -195,6 +210,10 @@ question3Correct = () => {
 };
 
 question4Wrong = () => {
+  answer1.removeEventListener("click", question4Wrong);
+  answer2.removeEventListener("click", question4Wrong);
+  answer3.removeEventListener("click", question4Wrong);
+  answer4.removeEventListener("click", question4Correct);
   secondsLeft = secondsLeft - 5;
   questions.textContent = "What is the correct HTML for making a checkbox?";
   answer1.textContent = `1. <input type="checkbox">`;
@@ -217,6 +236,10 @@ question4Wrong = () => {
 };
 
 question4Correct = () => {
+  answer1.removeEventListener("click", question4Wrong);
+  answer2.removeEventListener("click", question4Wrong);
+  answer3.removeEventListener("click", question4Wrong);
+  answer4.removeEventListener("click", question4Correct);
   scoreNumber++;
   questions.textContent = "What is the correct HTML for making a checkbox?";
   answer1.textContent = `1. <input type="checkbox">`;
@@ -239,6 +262,10 @@ question4Correct = () => {
 };
 
 question5Wrong = () => {
+  answer1.removeEventListener("click", question5Correct);
+  answer2.removeEventListener("click", question5Wrong);
+  answer3.removeEventListener("click", question5Wrong);
+  answer4.removeEventListener("click", question5Wrong);
   secondsLeft = secondsLeft - 5;
   questions.textContent = "What is the correct HTML for making a text area?";
   answer1.textContent = `1. <input type="textarea">`;
@@ -250,13 +277,17 @@ question5Wrong = () => {
   result.textContent = "Wrong!";
   takeOffResult();
 
-  answer1.addEventListener("click", finalWrongAnswer);
-  answer2.addEventListener("click", finalCorrectAnswer);
-  answer3.addEventListener("click", finalWrongAnswer);
-  answer4.addEventListener("click", finalWrongAnswer);
+  answer1.addEventListener("click", submitScoreWrong);
+  answer2.addEventListener("click", submitScoreCorrect);
+  answer3.addEventListener("click", submitScoreWrong);
+  answer4.addEventListener("click", submitScoreWrong);
 };
 
 question5Correct = () => {
+  answer1.removeEventListener("click", question5Correct);
+  answer2.removeEventListener("click", question5Wrong);
+  answer3.removeEventListener("click", question5Wrong);
+  answer4.removeEventListener("click", question5Wrong);
   scoreNumber++;
   questions.textContent = "What is the correct HTML for making a text area?";
   answer1.textContent = `1. <input type="textarea">`;
@@ -268,32 +299,13 @@ question5Correct = () => {
   result.textContent = "Correct!";
   takeOffResult();
 
-  answer1.addEventListener("click", finalWrongAnswer);
-  answer2.addEventListener("click", finalCorrectAnswer);
-  answer3.addEventListener("click", finalWrongAnswer);
-  answer4.addEventListener("click", finalWrongAnswer);
+  answer1.addEventListener("click", submitScoreWrong);
+  answer2.addEventListener("click", submitScoreCorrect);
+  answer3.addEventListener("click", submitScoreWrong);
+  answer4.addEventListener("click", submitScoreWrong);
 };
 
-finalWrongAnswer = () => {
-  divForQuestions.appendChild(hr);
-  divForQuestions.appendChild(result);
-  result.textContent = "Wrong!";
-  takeOffResult();
-  secondsLeft = 0;
-  submitScore();
-};
-
-finalCorrectAnswer = () => {
-  divForQuestions.appendChild(hr);
-  divForQuestions.appendChild(result);
-  result.textContent = "Correct!";
-  takeOffResult();
-  secondsLeft = 0;
-  scoreNumber++;
-  submitScore();
-};
-
-submitScore = () => {
+submitScoreCorrect = () => {
   questions.textContent = "All done!";
   firstParagraph.textContent = "Your final score is " + scoreNumber + ".";
   firstParagraph.setAttribute("style", "text-align:left");
@@ -307,10 +319,35 @@ submitScore = () => {
   divForSubmitScore.appendChild(score);
   divForSubmitScore.appendChild(input);
   divForSubmitScore.appendChild(submit);
+  scoreNumber++;
+  divForQuestions.appendChild(hr);
+  divForQuestions.appendChild(result);
+  result.textContent = "Correct!";
+  takeOffResult();
+};
+
+submitScoreWrong = () => {
+  questions.textContent = "All done!";
+  firstParagraph.textContent = "Your final score is " + scoreNumber + ".";
+  firstParagraph.setAttribute("style", "text-align:left");
+  answer1.remove();
+  answer2.remove();
+  answer3.remove();
+  answer4.remove();
+  score.textContent = "Enter initials: ";
+  submit.textContent = "Submit";
+  divForQuestions.appendChild(divForSubmitScore);
+  divForSubmitScore.appendChild(score);
+  divForSubmitScore.appendChild(input);
+  divForSubmitScore.appendChild(submit);
+  scoreNumber++;
+  divForQuestions.appendChild(hr);
+  divForQuestions.appendChild(result);
+  result.textContent = "Wrong!";
+  takeOffResult();
 };
 
 highScoresChart = () => {
-  storedScores()
   questions.textContent = "High Scores";
   questions.setAttribute("style", "margin:0;");
   firstParagraph.remove();
@@ -321,34 +358,31 @@ highScoresChart = () => {
   result.remove();
   startButton.remove();
 
-  var initials = input.value.trim();
-  var li = document.createElement("li");
-  li.textContent = "- " + initials + " / " + scoreNumber + " point(s).";
-  listOfScores.push(initials);
   divForSubmitScore.appendChild(listScores);
-  listScores.appendChild(li);
-  divForSubmitScore.setAttribute(
-    "style",
-    "display:flex; justify-content:center; margin-top:7px;"
-  );
-  li.setAttribute("style", "display:block; font-size: 30px;");
-  divForQuestions.appendChild(divForLastButtons);
 
-  buttonGoBack.textContent = "GO BACK";
-  divForLastButtons.appendChild(buttonGoBack);
+  for (var i = 0; i < todos.length; i++) {
+    var itemInitialsScore = arrayOfScores[i];
 
-  buttonReset.textContent = "RESET HIGH SCORES";
-  divForLastButtons.appendChild(buttonReset);
-  storeScores();
+    var itemList = document.createElement("li") ;
+    itemList.textContent = todo;
+    itemList.setAttribute("data-index", i);
+
+    listScores.appendChild(itemList);
+  }
+  
+  var initials = input.value.trim();
+  // itemList.textContent = initials.toUpperCase() + " - " + scoreNumber + " point(s).";
+  var itemInitialsScore = initials.toUpperCase() + " - " + scoreNumber + " point(s).";
+  arrayOfScores.push(itemInitialsScore);
+  localStorage.setItem("scores", JSON.stringify(arrayOfScores));
+
+  var arraySavedScores = JSON.parse(localStorage.getItem("scores"));
+  arraySavedScores.forEach(element => {
+    
+    itemList.textContent = arraySavedScores[element];
+  });
 };
 
-function storeScores() {
-  localStorage.setItem("scores", JSON.stringify(listOfScores));
-}
-
-function storedScores() {
-  storedScored = JSON.parse(localStorage.getItem("scores"));
-}
 
 hover1 = () => {
   answer1.style.cursor = "pointer";
@@ -416,3 +450,31 @@ answer4.addEventListener("mouseover", hover4);
 answer4.addEventListener("mouseout", out4);
 submit.addEventListener("mouseover", submitHover);
 submit.addEventListener("mouseout", submitOut);
+
+
+// var initials = input.value.trim();
+//   var li = document.createElement("li");
+//   li.textContent = "- " + initials + " / " + scoreNumber + " point(s).";
+//   listOfScores.push(initials);
+//   divForSubmitScore.appendChild(listScores);
+//   listScores.appendChild(li);
+//   divForSubmitScore.setAttribute(
+//     "style",
+//     "display:flex; justify-content:center; margin-top:7px;"
+//   );
+//   li.setAttribute("style", "display:block; font-size: 30px;");
+//   divForQuestions.appendChild(divForLastButtons);
+
+//   buttonGoBack.textContent = "GO BACK";
+//   divForLastButtons.appendChild(buttonGoBack);
+
+//   buttonReset.textContent = "RESET HIGH SCORES";
+//   divForLastButtons.appendChild(buttonReset);
+//   storeScores();
+// function storeScores() {
+//   localStorage.setItem("scores", JSON.stringify(listOfScores));
+// }
+
+// function storedScores() {
+//   storedScored = JSON.parse(localStorage.getItem("scores"));
+// }
