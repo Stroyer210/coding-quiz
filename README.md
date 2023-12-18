@@ -15,13 +15,13 @@ You are able to see the coding quiz in two different ways, depending on what you
 ## Usage :bar_chart:
 If you are unable to open the URL, I attached a screenshot of it below:
     ---
-    ![This is how the application looks like.](assets/images/s1.png)
+    ![This is how the application looks like.](assets/images/S1.png)
     ---
-    ![This is how a question with the answers looks like.](assets/images/s2.png)
+    ![This is how a question with the answers looks like.](assets/images/S2.png)
     ---
-    ![This is the submit area.](assets/images/s3.png)
+    ![This is the submit area.](assets/images/S3.png)
     ---
-    ![This is the list of scores.](assets/images/s4.png)
+    ![This is the list of scores.](assets/images/S4.png)
     ---
     
 After you open the application, you will have to click the button that says "Generate Password", and then it is gonna ask you how long you want your password, then it is gonna ask you if you want uppercase, lowercase, numbers and symbols and finally it is gonna generate a random password with the group of characters that you asked for.
